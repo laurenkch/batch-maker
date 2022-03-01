@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'frontend.apps.FrontendConfig',
     'api.apps.ApiConfig',
+    'recipes.apps.RecipesConfig',
 
     # third party
     'rest_framework',
