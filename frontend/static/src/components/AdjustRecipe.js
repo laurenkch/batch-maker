@@ -1,6 +1,9 @@
 import Form from 'react-bootstrap/Form';
 import FormCheck from 'react-bootstrap/FormCheck';
 import { useState } from 'react';
+import Cookies from 'js-cookie';
+import handleError from './../utility';
+import Step from './Step';
 
 function AdjustRecipe() {
 
@@ -20,8 +23,10 @@ function AdjustRecipe() {
 
     }
  
-    const [state, setState] = useState(INITIAL_STATE)
+    const [state, setState] = useState(INITIAL_STATE);
+    const [stepcount, setStepCount] = useState(1);
     console.log(state);
+
     const handleInput = (e) => {
             const { name, value } = e.target
 
@@ -29,11 +34,37 @@ function AdjustRecipe() {
                 ...prevState,
                 [name]: value,
             }));
-        };
+    };
+    
+    const handleRadioButton = (e) => {
+
+        setState((prevState) => ({
+            ...prevState,
+            is_public: e.target.value,
+        }));
+    };
+
+    const saveRecipe = (e) => {
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': Cookies.get('csrftoken'),
+            }
+        }
+
+    }
+
+    let stepHTML = Array.from(Array(stepcount)).map((slot, index) => <Step key={index} state={state} setState={setState} />)
+    
+    console.log(stepHTML);
+    console.log(stepcount);
+
 
     return (
         <div>
-            <Form className='form-inline'>
+            <Form className='form-inline' onSubmit={saveRecipe}>
                 <h2>Basic Info</h2>
                 <Form.Label className='visually-hidden' htmlFor='image upload'></Form.Label>
                 <Form.Control
@@ -53,16 +84,15 @@ function AdjustRecipe() {
                     value={state.title}
                     placeholder='Recipe Name'
                 />
-
                 <div className="form-check form-check-inline">
-                    <input className="form-check-input" type="radio" id="make it public" value="true"/>
-                        <label className="form-check-label" htmlFor="make it public">Make it Public</label>
+                    <label className="form-check-label" htmlFor="make it public">Make it Public</label>
+                    <input className="form-check-input" name='is_public' type="radio" id="make it public" value="true" onChange={handleRadioButton}/>
                 </div>
                 <div className="form-check form-check-inline">
-                    <input className="form-check-input" type="radio" id="keep it private" value="false"/>
-                        <label className="form-check-label" htmlFor="keep it private">Keep it Private</label>
+                    <label className="form-check-label" htmlFor="keep it private">Keep it Private</label>
+                    <input className="form-check-input" type="radio" id="keep it private" name='is_public' value="false" onChange={handleRadioButton}/>
                 </div>
-                <label htmlFor="recipe type" className='visually-hidden'></label>
+                    <label htmlFor="recipe type" className='visually-hidden'></label>
                 <select id="recipe type" className="category" onChange={((e) => setState((prevState) => ({
                     ...prevState,
                     category: e.target.value,
@@ -114,6 +144,18 @@ function AdjustRecipe() {
                     <option value='F' defaultValue>F</option>
                     <option value="C">C</option>
                 </select>
+                <Form.Label htmlFor='makes total'>This recipe will make</Form.Label>
+                <Form.Control type='text' id='makes total' value={state.makes_total} onChange={handleInput} required autoComplete='off' name='makes_total' placeholder='Amount' />
+                <Form.Label htmlFor='total descriptor' className='visually-hidden'></Form.Label>
+                <Form.Control type='text' id='total descriptor' value={state.makes_descriptor} onChange={handleInput} required autoComplete='off' name='makes_descriptor' placeholder='Cookies, loaves, etc.' />
+
+                {stepHTML}
+                <button type='button' onClick={()=>setStepCount(stepcount+1)}>Add additional step</button>
+
+                <h3>Personal Notes</h3>
+                <Form.Label htmlFor='personal notes' className='visually-hidden'></Form.Label>
+                <Form.Control as='textarea' rows={5} value={state.personal_notes} name='personal_notes' onChange={handleInput} />
+            <button type='submit'>Save</button>
             </Form>
         </div>
     )
