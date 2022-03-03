@@ -55,7 +55,7 @@ function AdjustRecipe() {
 
     }
 
-    let stepHTML = Array.from(Array(stepcount)).map((slot, index) => <Step key={index} state={state} setState={setState} />)
+    let stepHTML = Array.from(Array(stepcount)).map((slot, index) => <Step key={index} state={state} setState={setState} stepIndex={index}/>)
 
     return (
         <div>

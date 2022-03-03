@@ -26,7 +26,7 @@ function Ingredient({ handleInput, index, removeIngredient, ingredients}) {
                 placeholder='Unit'
                 onChange={(e) => handleInput(e,index)}
             />
-            <Form.Label htmlFor='ingrediant'></Form.Label>
+            <Form.Label htmlFor='ingredient'></Form.Label>
             <Form.Control
                 id='ingredient'
                 name='ingredient'
@@ -36,7 +36,7 @@ function Ingredient({ handleInput, index, removeIngredient, ingredients}) {
                 placeholder='Ingredient'
                 onChange={(e) => handleInput(e,index)}
             />
-            <button type='button' onClick={removeIngredient}>minus</button>
+            <button type='button' onClick={(e) =>removeIngredient(e,index)}>minus</button>
         </div>
     )
 
