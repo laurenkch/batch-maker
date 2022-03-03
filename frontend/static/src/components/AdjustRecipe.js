@@ -1,5 +1,4 @@
 import Form from 'react-bootstrap/Form';
-import FormCheck from 'react-bootstrap/FormCheck';
 import { useState } from 'react';
 import Cookies from 'js-cookie';
 import handleError from './../utility';
@@ -10,7 +9,7 @@ function AdjustRecipe() {
     const INITIAL_STATE = {
         title: '',
         is_public: '',
-        image: '',
+        image: null,
         category: 'Din',
         prep_time: '',
         cook_time: '',
@@ -43,16 +42,28 @@ function AdjustRecipe() {
         }));
     };
 
-    const saveRecipe = (e) => {
+    const saveRecipe = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+
+        for (const [key, value] of Object.entries(state)) {
+            if (key === 'ingredients') {
+                formData.append('ingredients', JSON.stringify(value))
+            } else if (value) {
+                formData.append(key, value)
+            }
+        };
 
         const options = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': Cookies.get('csrftoken'),
-            }
+            },
+            body: formData
         }
-
+        const response = await fetch('api/v1/recipes/', options).catch(handleError);
+        const data = await response.json();
     }
 
     let stepHTML = Array.from(Array(stepcount)).map((slot, index) => <Step key={index} state={state} setState={setState} stepIndex={index}/>)

@@ -1,6 +1,4 @@
 import Form from 'react-bootstrap/Form';
-import { useState } from 'react';
-
 
 function Ingredient({ handleInput, index, removeIngredient, ingredients}) {
 
@@ -10,7 +8,6 @@ function Ingredient({ handleInput, index, removeIngredient, ingredients}) {
             <Form.Control
                 id='amount'
                 name='amount'
-                required
                 autoComplete='off'
                 value={ingredients[index].amount}
                 placeholder='Amount'
@@ -20,7 +17,6 @@ function Ingredient({ handleInput, index, removeIngredient, ingredients}) {
             <Form.Control
                 id='unit'
                 name='unit'
-                required
                 autoComplete='off'
                 value={ingredients[index].unit}
                 placeholder='Unit'
@@ -30,7 +26,6 @@ function Ingredient({ handleInput, index, removeIngredient, ingredients}) {
             <Form.Control
                 id='ingredient'
                 name='ingredient'
-                required
                 autoComplete='off'
                 value={ingredients[index].ingredient}
                 placeholder='Ingredient'

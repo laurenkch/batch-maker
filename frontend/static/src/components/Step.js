@@ -69,7 +69,6 @@ function Step({ setState, state, stepIndex}) {
             />
     ));
 
-
     return (
         <div>
             <h4>Step {stepIndex+1}</h4>
