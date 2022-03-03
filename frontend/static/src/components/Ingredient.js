@@ -1,7 +1,8 @@
 import Form from 'react-bootstrap/Form';
+import { useState } from 'react';
 
 
-function Ingredient({ removeIngredient, ingredientcount, step}) {
+function Ingredient({ handleInput, index, removeIngredient, ingredients}) {
 
     return (
         <div>
@@ -11,8 +12,9 @@ function Ingredient({ removeIngredient, ingredientcount, step}) {
                 name='amount'
                 required
                 autoComplete='off'
-                value={step.ingredients[ingredientcount].amount}
+                value={ingredients[index].amount}
                 placeholder='Amount'
+                onChange={(e) => handleInput(e, index)}
             />
             <Form.Label htmlFor='unit'></Form.Label>
             <Form.Control
@@ -20,8 +22,9 @@ function Ingredient({ removeIngredient, ingredientcount, step}) {
                 name='unit'
                 required
                 autoComplete='off'
-                value={step.ingredients[ingredientcount].unit}
+                value={ingredients[index].unit}
                 placeholder='Unit'
+                onChange={(e) => handleInput(e,index)}
             />
             <Form.Label htmlFor='ingrediant'></Form.Label>
             <Form.Control
@@ -29,10 +32,11 @@ function Ingredient({ removeIngredient, ingredientcount, step}) {
                 name='ingredient'
                 required
                 autoComplete='off'
-                value={step.ingredients[ingredientcount].ingredient}
+                value={ingredients[index].ingredient}
                 placeholder='Ingredient'
+                onChange={(e) => handleInput(e,index)}
             />
-            <button type='button' onclick={removeIngredient}>minus</button>
+            <button type='button' onClick={removeIngredient}>minus</button>
         </div>
     )
 

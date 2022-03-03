@@ -25,7 +25,6 @@ function AdjustRecipe() {
  
     const [state, setState] = useState(INITIAL_STATE);
     const [stepcount, setStepCount] = useState(1);
-    console.log(state);
 
     const handleInput = (e) => {
             const { name, value } = e.target
@@ -57,10 +56,6 @@ function AdjustRecipe() {
     }
 
     let stepHTML = Array.from(Array(stepcount)).map((slot, index) => <Step key={index} state={state} setState={setState} />)
-    
-    console.log(stepHTML);
-    console.log(stepcount);
-
 
     return (
         <div>
