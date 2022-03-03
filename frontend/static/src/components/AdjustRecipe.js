@@ -47,24 +47,31 @@ function AdjustRecipe() {
         const formData = new FormData();
 
         for (const [key, value] of Object.entries(state)) {
-            if (key === 'ingredients') {
-                formData.append('ingredients', JSON.stringify(value))
+            if (key === 'steps') {
+                formData.append('steps', JSON.stringify(value))
             } else if (value) {
                 formData.append(key, value)
             }
         };
 
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
+
         const options = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
                 'X-CSRFToken': Cookies.get('csrftoken'),
             },
-            body: formData
+            body: formData,
         }
         const response = await fetch('api/v1/recipes/', options).catch(handleError);
-        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error('Network was not ok');
+        }
     }
+    console.log(state)
 
     let stepHTML = Array.from(Array(stepcount)).map((slot, index) => <Step key={index} state={state} setState={setState} stepIndex={index}/>)
 
